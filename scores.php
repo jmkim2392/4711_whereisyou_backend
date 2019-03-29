@@ -16,7 +16,7 @@
 
     switch($request_method) {
 		case 'GET':
-			$stmt
+			$stmt;
             if(!empty($_GET["userId"])) {
                 $id= $_GET["userId"] ;
                 $stmt = $scoreObj->get_scores($id);
@@ -41,7 +41,6 @@
 						"distance" => $distance,
 						"date" => $date,
 					);
-			
 					array_push($scores_arr["records"], $score_item);
 				}
 				http_response_code(200);
