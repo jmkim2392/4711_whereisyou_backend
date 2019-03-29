@@ -1,6 +1,8 @@
 <?php 
-    include_once '../config/database.php';
-    include_once '../worker/dailyChallenge.php';
+    include_once ($_SERVER['DOCUMENT_ROOT'] . "/config/database.php");
+    include_once ($_SERVER['DOCUMENT_ROOT'] . "/objects/challenge.php");
+
+    //include_once '../objects/challenge.php';
 
     // instantiate database and product object
     $database = new Database();
