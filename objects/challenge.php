@@ -10,6 +10,7 @@ class Challenge{
     public $challengeId;
     public $latitude;
     public $longitude;
+    public $date;
  
     // constructor with $db as database connection
     public function __construct($db){
