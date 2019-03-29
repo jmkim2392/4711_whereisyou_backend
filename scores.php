@@ -19,13 +19,20 @@
 		case 'GET':
 			$stmt;
             if(!empty($headers['userId'])) {
-                $id= $headers['userId'] ;
+				$id= $headers['userId'] ;
+				echo ($headers['userId']);
                 $stmt = $scoreObj->get_scores($id);
             } else {
 				$date = $headers['date'];
             	$stmt = $scoreObj->get_daily_scores($date);
 			}
+			
 			$num = $stmt->rowCount();
+
+			
+			echo ($headers['userId']);
+			echo ($headers['date']);
+			echo ($num);
 
 			// check if more than 0 record found
 			if($num>0){
