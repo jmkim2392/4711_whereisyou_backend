@@ -2,8 +2,8 @@
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     
-    include_once '../config/database.php';
-    include_once '../objects/score.php';
+    include_once './config/database.php';
+    include_once './objects/score.php';
 
     // instantiate database and product object
     $database = new Database();
@@ -12,16 +12,18 @@
     // initialize object
 	$scoreObj = new Score($db);
 
-    $request_method=$_SERVER["REQUEST_METHOD"];
+	$request_method=$_SERVER["REQUEST_METHOD"];
+	$headers = getallheaders();  
 
     switch($request_method) {
 		case 'GET':
 			$stmt;
-            if(!empty($_GET["userId"])) {
-                $id= $_GET["userId"] ;
+            if(!empty($headers['userId'])) {
+                $id= $headers['userId'] ;
                 $stmt = $scoreObj->get_scores($id);
             } else {
-            	$stmt = $scoreObj->get_scores();
+				$date = $headers['date'];
+            	$stmt = $scoreObj->get_daily_scores($date);
 			}
 			$num = $stmt->rowCount();
 
@@ -33,7 +35,7 @@
 			
 				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 					extract($row);
-			
+					
 					$score_item=array(
 						"scoreId" => $scoreId,
 						"challengeId" => $challengeId,
@@ -55,7 +57,7 @@
         case 'POST':
             // get posted data
 			$data = json_decode(file_get_contents("php://input"));
-			
+
 			// make sure data is not empty
 			if(	!empty($data->scoreId) && !empty($data->userId) && !empty($data->challengeId) 
 				&& !empty($data->score) && !empty($data->distance)&& !empty($data->date)) {
@@ -78,7 +80,7 @@
 				}
 			} else {
 				http_response_code(400);
-				echo json_encode(array("message" => "Unable to create product. Data is incomplete."));
+				echo json_encode(array("message" => "Unable to create score. Data is incomplete."));
 			}
             break;
 		default:

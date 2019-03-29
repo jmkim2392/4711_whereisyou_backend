@@ -34,6 +34,20 @@ class Score{
         return $stmt;
     }
     
+    public function get_daily_scores($date) {
+        $date_query = date($date);
+        $query="SELECT * FROM ".$this->table_name . " WHERE date=".$date_query;
+        
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+
 
     public function addScore() {
         // query to insert record
@@ -44,12 +58,12 @@ class Score{
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->scoreId));
-        $this->price=htmlspecialchars(strip_tags($this->userId));
-        $this->description=htmlspecialchars(strip_tags($this->challengeId));
-        $this->category_id=htmlspecialchars(strip_tags($this->score));
-        $this->created=htmlspecialchars(strip_tags($this->distance));
-        $this->created=htmlspecialchars(strip_tags($this->date));
+        $this->scoreId=htmlspecialchars(strip_tags($this->scoreId));
+        $this->userId=htmlspecialchars(strip_tags($this->userId));
+        $this->challengeId=htmlspecialchars(strip_tags($this->challengeId));
+        $this->score=htmlspecialchars(strip_tags($this->score));
+        $this->distance=htmlspecialchars(strip_tags($this->distance));
+        $this->date=htmlspecialchars(strip_tags($this->date));
 
         // bind values
         $stmt->bindParam(":scoreId", $this->scoreId);
@@ -57,13 +71,12 @@ class Score{
         $stmt->bindParam(":challengeId", $this->challengeId);
         $stmt->bindParam(":score", $this->score);
         $stmt->bindParam(":distance", $this->distance);
-        $stmt->bindParam(":date", $this->date);
+        $stmt->bindParam(":date", date($this->date));
 
         // execute query
         if($stmt->execute()){
             return true;
         }
-
         return false;
     }
 }
