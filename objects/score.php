@@ -58,7 +58,7 @@ class Score{
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->scoreId= guidv4();
+        $this->scoreId= com_create_guid();
         $this->userId=htmlspecialchars(strip_tags($this->userId));
         $this->challengeId=htmlspecialchars(strip_tags($this->challengeId));
         $this->score=htmlspecialchars(strip_tags($this->score));

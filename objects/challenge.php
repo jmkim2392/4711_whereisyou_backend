@@ -8,7 +8,6 @@ class Challenge{
     private $max_lat = 90;
     private $min_long = -180;
     private $max_long = 180;
-    private $google_api_key ="AIzaSyCMwbBE9ejXKzz1bpN1tgYVzYi4CKnYWyk";
 
     // object properties
     public $id;
