@@ -20,15 +20,15 @@
     switch($request_method) {
 		case 'GET':
 			$stmt;
-            if(!empty($headers['userId'])) {
-				$id= $headers['userId'] ;
+            if(!empty($_SERVER['userId'])) {
+				$id= $_SERVER['userId'] ;
 				echo("userID received");
-				echo ($headers['userId']);
+				echo ($_SERVER['userId']);
                 $stmt = $scoreObj->get_scores($id);
             } else {
-				$date = $headers['date'];
+				$date = $_SERVER['date'];
 				echo("date received");
-				echo ($headers['date']);
+				echo ($_SERVER['date']);
             	$stmt = $scoreObj->get_daily_scores($date);
 			}
 			
