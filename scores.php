@@ -19,7 +19,10 @@
 	$headers = apache_request_headers();
 
 	foreach ($headers as $header => $value) {
+		if($header == 'userId') {
+			
 		echo "$header: $value \n";
+		}
 	}
     switch($request_method) {
 		case 'GET':
