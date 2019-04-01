@@ -22,13 +22,13 @@
 			$stmt;
             if(!empty($_SERVER['userId'])) {
 				$id= $_SERVER['userId'] ;
-				echo("userID received");
-				echo ($_SERVER['userId']);
+				echo("userID received\n");
+				echo ($id);
                 $stmt = $scoreObj->get_scores($id);
             } else {
 				$date = $_SERVER['date'];
-				echo("date received");
-				echo ($_SERVER['date']);
+				echo("date received\n");
+				echo ($date);
             	$stmt = $scoreObj->get_daily_scores($date);
 			}
 			
