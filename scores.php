@@ -16,8 +16,11 @@
 	$helper = new Helper();
 
 	$request_method=$_SERVER["REQUEST_METHOD"];
-	$headers = getallheaders();  
+	$headers = apache_request_headers();
 
+	foreach ($headers as $header => $value) {
+		echo "$header: $value \n";
+	}
     switch($request_method) {
 		case 'GET':
             if(!empty($_SERVER['userId'])) {
