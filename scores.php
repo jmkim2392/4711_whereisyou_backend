@@ -22,18 +22,17 @@
 			$stmt;
             if(!empty($headers['userId'])) {
 				$id= $headers['userId'] ;
+				echo("userID received");
 				echo ($headers['userId']);
                 $stmt = $scoreObj->get_scores($id);
             } else {
 				$date = $headers['date'];
+				echo("date received");
+				echo ($headers['date']);
             	$stmt = $scoreObj->get_daily_scores($date);
 			}
 			
 			$num = $stmt->rowCount();
-
-			
-			echo ($headers['userId']);
-			echo ($headers['date']);
 			echo ($num);
 
 			// check if more than 0 record found
