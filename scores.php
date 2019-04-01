@@ -17,29 +17,26 @@
 
 	$request_method=$_SERVER["REQUEST_METHOD"];
 	$headers = apache_request_headers();
-
+	$id;
+	$date;
 	foreach ($headers as $header => $value) {
 		if(strcasecmp($header, 'userId')==0) {
-			
-		echo "$header: $value \n";
+			$id = $value;
+		} else if (strcasecmp($header, 'date')==0) {
+			$date = $value;
 		}
 	}
     switch($request_method) {
 		case 'GET':
-            if(!empty($_SERVER['Userid'])) {
-				$id= $_SERVER['Userid'] ;
+            if(!empty($id)) {
 				echo("userID received\n");
-				//echo ($id);
                 $stmt = $scoreObj->get_scores($id);
             } else {
-				$date = $_SERVER['Date'];
 				echo("date received\n");
-				//echo ($date);
             	$stmt = $scoreObj->get_daily_scores($date);
 			}
 			
 			$num = $stmt->rowCount();
-			//echo ($num);
 
 			// check if more than 0 record found
 			if($num>0){
