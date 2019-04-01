@@ -20,7 +20,6 @@
 
     switch($request_method) {
 		case 'GET':
-			$stmt;
             if(!empty($_SERVER['userId'])) {
 				$id= $_SERVER['userId'] ;
 				echo("userID received\n");
