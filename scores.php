@@ -4,6 +4,7 @@
     
     include_once './config/database.php';
     include_once './objects/score.php';
+	include_once './objects/helper.php';
 
     // instantiate database and product object
     $database = new Database();
@@ -11,6 +12,7 @@
 	
     // initialize object
 	$scoreObj = new Score($db);
+	$helper = new Helper();
 
 	$request_method=$_SERVER["REQUEST_METHOD"];
 	$headers = getallheaders();  
@@ -67,14 +69,15 @@
 
 			// make sure data is not empty
 			if(!empty($data->userId) && !empty($data->challengeId) 
-				&& !empty($data->score) && !empty($data->distance)&& !empty($data->date)) {
+				&& !empty($data->score) && !empty($data->distance)) {
 			
 				// set score property values
+				$scoreObj->scoreId = $helper->getGUID();
 				$scoreObj->userId = $data->userId;
 				$scoreObj->challengeId = $data->challengeId;
 				$scoreObj->score = $data->score;
 				$scoreObj->distance = $data->distance;
-				$scoreObj->date = $data->date;
+				$scoreObj->date = $helper->get_current_date();
 			
 				// create the score
 				if ($scoreObj->addScore()) {

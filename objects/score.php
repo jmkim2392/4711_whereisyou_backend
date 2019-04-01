@@ -4,7 +4,7 @@ class Score{
     // database connection and table name
     private $conn;
     private $table_name = "scores";
- 
+
     // object properties
     public $scoreId;
     public $userId;
@@ -58,12 +58,10 @@ class Score{
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->scoreId= $this->getGUID();
         $this->userId=htmlspecialchars(strip_tags($this->userId));
         $this->challengeId=htmlspecialchars(strip_tags($this->challengeId));
         $this->score=htmlspecialchars(strip_tags($this->score));
         $this->distance=htmlspecialchars(strip_tags($this->distance));
-        $this->date=htmlspecialchars(strip_tags($this->date));
 
         // bind values
         $stmt->bindParam(":scoreId", $this->scoreId);
@@ -78,22 +76,5 @@ class Score{
             return true;
         }
         return false;
-    }
-
-    private function getGUID(){
-        if (function_exists('com_create_guid')){
-            return com_create_guid();
-        }
-        else {
-            mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-            $charid = strtoupper(md5(uniqid(rand(), true)));
-            $hyphen = chr(45);// "-"
-            $uuid = substr($charid, 0, 8).$hyphen
-                .substr($charid, 8, 4).$hyphen
-                .substr($charid,12, 4).$hyphen
-                .substr($charid,16, 4).$hyphen
-                .substr($charid,20,12);
-            return $uuid;
-        }
     }
 }
