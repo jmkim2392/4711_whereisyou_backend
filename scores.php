@@ -82,6 +82,7 @@
 				if ($scoreObj->addScore()) {
 					http_response_code(201);
 					echo json_encode(array("message" => "Score created."));
+					//check highscores of that day, make changes to badges
 				} else {
 					http_response_code(500);
 					echo json_encode(array("message" => "Failed to create score."));
