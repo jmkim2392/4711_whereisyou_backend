@@ -28,8 +28,8 @@
 			if($num<1){
                 for($i =0; $i< 5; $i++) {
                     $challengeObj->challengeId = $helper->getGUID();
-                    $challengeObj->latitude = $helper->get_random_float($this->min_lat, $this->max_lat, 6);
-                    $challengeObj->longitude = $helper->get_random_float($this->min_long, $this->max_long, 6);
+                    $challengeObj->latitude = $helper->get_random_float($min_lat, $max_lat, 6);
+                    $challengeObj->longitude = $helper->get_random_float($min_long, $max_long, 6);
                     $challengeObj->qNum = $i;
                     $challengeObj->generate_daily_challenges();
                 }
