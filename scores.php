@@ -66,11 +66,10 @@
 			$data = json_decode(file_get_contents("php://input"));
 
 			// make sure data is not empty
-			if(	!empty($data->scoreId) && !empty($data->userId) && !empty($data->challengeId) 
+			if(!empty($data->userId) && !empty($data->challengeId) 
 				&& !empty($data->score) && !empty($data->distance)&& !empty($data->date)) {
 			
 				// set score property values
-				$scoreObj->scoreId = $data->scoreId;
 				$scoreObj->userId = $data->userId;
 				$scoreObj->challengeId = $data->challengeId;
 				$scoreObj->score = $data->score;
