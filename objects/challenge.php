@@ -1,5 +1,4 @@
 <?php
-    
 
 class Challenge{
  
@@ -7,7 +6,6 @@ class Challenge{
     private $conn;
     private $table_name = "challenges";
    
-
     // object properties
     public $challengeId;
     public $latitude;
@@ -24,24 +22,32 @@ class Challenge{
         // need to implement nearest road otherwise, it can be anywhere.
         // google nearest roads api is not free $10
         // osm api is free, but need to look into how to use it
-        $today = $this->date;
-        
+		// check if more than 0 record found
+
         $query = "INSERT INTO " . $this->table_name . "(challengeId, latitude, longitude, date ,qNum)
         VALUES (:challengeId, :latitude, :longitude, :date, :qNum)";
         $stmt = $this->conn->prepare($query);
 
-        for($i =0; $i< 5; $i++) {
-            $challengeId = $this->challengeId;
-            $lat = $this->latitude;
-            $long = $this->longitude;
+        $stmt->bindParam(":challengeId", $this->challengeId);
+        $stmt->bindParam(":latitude", $this->latitude);
+        $stmt->bindParam(":longitude", $this->longitude);
+        $stmt->bindParam(":date", $this->date);
+        $stmt->bindParam(":qNum", $this->qNum);
 
-            $stmt->bindParam(":challengeId", $challengeId);
-            $stmt->bindParam(":latitude", $lat);
-            $stmt->bindParam(":longitude", $long);
-            $stmt->bindParam(":date", $today);
-            $stmt->bindParam(":qNum", $i);
+        $stmt->execute();
+    }
 
-            $stmt->execute();
-        }
+    public function get_daily_challenges() {
+
+        $query = "SELECT * FROM ".$this->table_name . " WHERE date=".$this->date;
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
     }
 }
+?>

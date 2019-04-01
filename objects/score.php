@@ -47,8 +47,6 @@ class Score{
         return $stmt;
     }
 
-
-
     public function addScore() {
         // query to insert record
         $query = "INSERT INTO " . $this->table_name . " SET
@@ -78,3 +76,4 @@ class Score{
         return false;
     }
 }
+?>

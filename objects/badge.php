@@ -16,3 +16,4 @@ class Badge{
         $this->conn = $db;
     }
 }
+?>

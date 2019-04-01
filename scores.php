@@ -29,10 +29,8 @@
     switch($request_method) {
 		case 'GET':
             if(!empty($id)) {
-				echo("userID received\n");
                 $stmt = $scoreObj->get_scores($id);
             } else {
-				echo("date received\n");
             	$stmt = $scoreObj->get_daily_scores($date);
 			}
 			
@@ -70,8 +68,7 @@
 			$data = json_decode(file_get_contents("php://input"));
 
 			// make sure data is not empty
-			if(!empty($data->userId) && !empty($data->challengeId) 
-				&& !empty($data->score) && !empty($data->distance)) {
+			if(!empty($data->userId) && !empty($data->challengeId) && !empty($data->score) && !empty($data->distance)) {
 			
 				// set score property values
 				$scoreObj->scoreId = $helper->getGUID();
