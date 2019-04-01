@@ -39,7 +39,7 @@ class Challenge{
 
     public function get_daily_challenges() {
 
-        $query = "SELECT * FROM ".$this->table_name . " WHERE date=".$this->date;
+        $query = "SELECT * FROM ".$this->table_name . " WHERE date=".date($this->date);
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
