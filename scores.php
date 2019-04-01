@@ -19,7 +19,7 @@
 	$headers = apache_request_headers();
 
 	foreach ($headers as $header => $value) {
-		if($header == 'userId') {
+		if(strcasecmp($header, 'userId')==0) {
 			
 		echo "$header: $value \n";
 		}
