@@ -23,13 +23,13 @@
 	}
     switch($request_method) {
 		case 'GET':
-            if(!empty($_SERVER['userId'])) {
-				$id= $_SERVER['userId'] ;
+            if(!empty($_SERVER['Userid'])) {
+				$id= $_SERVER['Userid'] ;
 				echo("userID received\n");
 				//echo ($id);
                 $stmt = $scoreObj->get_scores($id);
             } else {
-				$date = $_SERVER['date'];
+				$date = $_SERVER['Date'];
 				echo("date received\n");
 				//echo ($date);
             	$stmt = $scoreObj->get_daily_scores($date);
