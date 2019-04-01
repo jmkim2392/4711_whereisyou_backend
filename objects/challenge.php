@@ -39,9 +39,6 @@ class Challenge{
 
     public function get_daily_challenges() {
         $date_query = "\"".$this->date."\"";
-        echo $date_query;
-        echo $this->date;
-        
         $query = "SELECT * FROM ".$this->table_name . " WHERE date=".$date_query;
        
         // prepare query statement
