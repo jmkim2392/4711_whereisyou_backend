@@ -1,4 +1,8 @@
 <?php 
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json; charset=UTF-8");
+	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, userId, date");
+    
     include_once '../config/database.php';
     include_once '../config/keyhandler.php';
     include_once '../objects/challenge.php';
