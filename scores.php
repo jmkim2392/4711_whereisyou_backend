@@ -1,11 +1,12 @@
 <?php
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
-	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, userId, date");
+	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type,key, Accept, userId, date");
 	
     include_once './config/database.php';
     include_once './objects/score.php';
 	include_once './objects/helper.php';
+	include_once './objects/badge.php';
 
     // instantiate database and product object
     $database = new Database();
@@ -14,17 +15,21 @@
     // initialize object
 	$scoreObj = new Score($db);
 	$helper = new Helper();
+	$badgeObj = new Badge($db);
 
 	$request_method=$_SERVER["REQUEST_METHOD"];
 	$headers = apache_request_headers();
 	$id;
 	$date;
+	$key;
 	foreach ($headers as $header => $value) {
 		if(strcasecmp($header, 'userId')==0) {
 			$id = $value;
 		} else if (strcasecmp($header, 'date')==0) {
 			$date = $value;
-		}
+		} else if(strcasecmp($header, 'key')==0) {
+            $key = $value;
+        }
 	}
     switch($request_method) {
 		case 'GET':
@@ -82,7 +87,20 @@
 				if ($scoreObj->addScore()) {
 					http_response_code(201);
 					echo json_encode(array("message" => "Score created."));
-					//check highscores of that day, make changes to badges
+					$badge = $scoreObj->checkScoreBadge();
+					$badgeObj->userId = $scoreObj->userId;
+					$badgeObj->date = $scoreObj->date;
+					if ($badge == "top") {
+						// delete today's highscore badge and reward this user
+						$badgeObj->badgeDesc = $helper->highscoreBadge;
+						$badgeObj->remove_badge();
+						$badgeObj->add_badge();
+					} else if ($badge == "worst") {
+						// delete today's worstscore badge and reward this user
+						$badgeObj->badgeDesc = $helper->worstScoreBadge;
+						$badgeObj->remove_badge();
+						$badgeObj->add_badge();
+					}
 				} else {
 					http_response_code(500);
 					echo json_encode(array("message" => "Failed to create score."));

@@ -36,7 +36,7 @@ class Score{
     
     public function get_daily_scores($date) {
         $date_query = date($date);
-        $query="SELECT * FROM ".$this->table_name . " WHERE date=".$date_query;
+        $query="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query."\"";
         
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -74,6 +74,36 @@ class Score{
             return true;
         }
         return false;
+    }
+
+    public function checkScoreBadge() {
+        $date_query = date($this->date);
+        $topScoreQuery="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query. "\" ORDER BY score DESC LIMIT 1";
+        $worstScoreQuery="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query. "\" ORDER BY score ASC LIMIT 1";
+        
+        // check if top score is user
+        $stmt = $this->conn->prepare($topScoreQuery);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        extract($row);
+        if ($userId == $this->userId) {
+            return "top";
+        }
+
+        // check if worst score is user
+        $stmt = $this->conn->prepare($worstScoreQuery);
+    
+        // execute query
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        extract($row);
+        if ($userId == $this->userId) {
+            return "worst";
+        }
+
+        return "none";
+
+        
     }
 }
 ?>

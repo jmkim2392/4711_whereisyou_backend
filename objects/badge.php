@@ -6,7 +6,6 @@ class Badge{
     private $table_name = "badges";
  
     // object properties
-    public $badgeId;
     public $badgeDesc;
     public $userId;
     public $date;
@@ -32,9 +31,9 @@ class Badge{
         return $stmt;
     }
     
-    public function get_daily_scores($date) {
+    public function get_daily_badge_by_type($date, $badgeDesc) {
         $date_query = date($date);
-        $query="SELECT * FROM ".$this->table_name . " WHERE date=".$date_query;
+        $query="SELECT * FROM ".$this->table_name . " WHERE date=".$date_query. " AND badgeDesc=".$badgeDesc;
         
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -44,6 +43,55 @@ class Badge{
     
         return $stmt;
     }
-    // need delete all badges of desc of that day
+
+    public function get_badges_by_type($badgeDesc) {
+        $query="SELECT * FROM ".$this->table_name . " WHERE badgeDesc=".$badgeDesc;
+        
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+    public function remove_badge() {
+        $date_query = date($this->date);
+        $query="DELETE FROM ".$this->table_name . " WHERE badgeDesc=\"".$this->badgeDesc. "\" AND date=\"".$date_query."\"";
+        echo $query;
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+    public function add_badge() {
+        // query to insert record
+        $query = "INSERT INTO " . $this->table_name . " SET
+        badgeDesc=:badgeDesc, userId=:userId, date=:date";
+
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->userId=htmlspecialchars(strip_tags($this->userId));
+        $this->badgeDesc=htmlspecialchars(strip_tags($this->badgeDesc));
+        $this->date=htmlspecialchars(strip_tags($this->date));
+
+        // bind values
+        $stmt->bindParam(":userId", $this->userId);
+        $stmt->bindParam(":badgeDesc", $this->badgeDesc);
+        $stmt->bindParam(":date", date($this->date));
+
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+    }
 }
 ?>

@@ -1,6 +1,9 @@
 <?php
 class Helper{
 
+    public $highscoreBadge = "Highest Score of the Day";
+    public $worstScoreBadge = "Worst Score of the Day";
+
     private $min_lat = 30;
     private $max_lat = 60;
     private $min_long = -135;
@@ -54,7 +57,6 @@ class Helper{
     }
 
     public function generate_nearest_roads_query($coord_arr) {
-        $query;
         $google = "https://roads.googleapis.com/v1/nearestRoads?points=";
         $lat_arr = $coord_arr["lat"];
         $long_arr = $coord_arr["long"];
@@ -71,7 +73,6 @@ class Helper{
     }
 
     public function generate_streetview_query($lat,$long) {
-        $query;
         $google = "https://maps.googleapis.com/maps/api/streetview/metadata?location=";
 
         $query = $google.$lat.",".$long;

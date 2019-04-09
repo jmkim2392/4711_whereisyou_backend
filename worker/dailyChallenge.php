@@ -1,7 +1,7 @@
 <?php 
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
-	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, userId, date");
+	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, userId, date, key");
     
     include_once '../config/database.php';
     include_once '../config/keyhandler.php';
@@ -19,6 +19,15 @@
     
     $request_method=$_SERVER["REQUEST_METHOD"];
 
+    // get all headers
+    $headers = apache_request_headers();
+    $key;
+    foreach ($headers as $header => $value) {
+        if(strcasecmp($header, 'key')==0) {
+            $key = $value;
+        }
+    }
+    
     $challengeCount=0;
     $streetviewCoord= array();
 
