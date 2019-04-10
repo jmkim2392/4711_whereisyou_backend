@@ -57,12 +57,8 @@
 							$userScore = $scores_arr[$userId]["score"] + $score;
 							$scores_arr[$userId]["score"] = $userScore;
 						} else {
-							$scores_arr[$userId] = array();
-							$score_item=array(
-								"score" => $score,
-								"date" => $date,
-							);
-							array_push($scores_arr[$userId], $score_item);
+							$scores_arr[$userId]["score"] = $score;
+							$scores_arr[$userId]["date"] = $date;
 						}
 					}
 				} else {
