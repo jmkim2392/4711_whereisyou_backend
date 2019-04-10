@@ -22,6 +22,7 @@
 	$id;
 	$date;
 	$key;
+	$leaderboard;
 	foreach ($headers as $header => $value) {
 		if(strcasecmp($header, 'userId')==0) {
 			$id = $value;
@@ -29,7 +30,9 @@
 			$date = $value;
 		} else if(strcasecmp($header, 'key')==0) {
             $key = $value;
-        }
+        } else if(strcasecmp($header, 'leaderboard')==0) {
+			$leaderboard = $value;
+		}
 	}
     switch($request_method) {
 		case 'GET':
@@ -43,22 +46,49 @@
 
 			// check if more than 0 record found
 			if($num>0){
-			
+	
 				$scores_arr=array();
-				$scores_arr["records"]=array();
+
+				if ($leaderboard) {
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						extract($row);
+						
+						if (array_key_exists($userId, $scores_arr)) {
+							$userScore = $scores_arr[$userId]["score"] + $score;
+							$score_item=array(
+								"scoreId" => $scoreId,
+								"score" => $userScore,
+								"date" => $date,
+							);
+							array_push($scores_arr[$userId], $score_item);
+						} else {
+							$scores_arr[$userId] = array();
+							$score_item=array(
+								"scoreId" => $scoreId,
+								"score" => $score,
+								"date" => $date,
+							);
+							array_push($scores_arr[$userId], $score_item);
+						}
+					}
+				} else {
+					$scores_arr=array();
 			
-				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-					extract($row);
-					
-					$score_item=array(
-						"scoreId" => $scoreId,
-						"challengeId" => $challengeId,
-						"score" => $score,
-						"distance" => $distance,
-						"date" => $date,
-					);
-					array_push($scores_arr["records"], $score_item);
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						extract($row);
+						
+						$score_item=array(
+							"scoreId" => $scoreId,
+							"userId" => $userId,
+							"challengeId" => $challengeId,
+							"score" => $score,
+							"distance" => $distance,
+							"date" => $date,
+						);
+						array_push($scores_arr, $score_item);
+					}
 				}
+			
 				http_response_code(200);
 				echo json_encode($scores_arr);
 			} else {
