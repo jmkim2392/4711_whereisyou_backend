@@ -54,12 +54,8 @@
 						extract($row);
 						
 						if (array_key_exists($userId, $scores_arr)) {
-							$userScore = $scores_arr[$userId][0]["score"] + $score;
-							$score_item=array(
-								"score" => $userScore,
-								"date" => $date,
-							);
-							array_push($scores_arr[$userId][0], $score_item);
+							$userScore = $scores_arr[$userId]["score"] + $score;
+							$scores_arr[$userId]["score"] = $userScore;
 						} else {
 							$scores_arr[$userId] = array();
 							$score_item=array(
