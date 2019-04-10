@@ -49,14 +49,14 @@
 	
 				$scores_arr=array();
 
-				if ($leaderboard) {
+				if (strcasecmp($leaderboard,'true')==0) {
 					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 						extract($row);
 						
 						if (array_key_exists($userId, $scores_arr)) {
 							$userScore = $scores_arr[$userId]["score"] + $score;
+							echo $scores_arr[$userId]["score"];
 							$score_item=array(
-								"scoreId" => $scoreId,
 								"score" => $userScore,
 								"date" => $date,
 							);
@@ -64,7 +64,6 @@
 						} else {
 							$scores_arr[$userId] = array();
 							$score_item=array(
-								"scoreId" => $scoreId,
 								"score" => $score,
 								"date" => $date,
 							);
