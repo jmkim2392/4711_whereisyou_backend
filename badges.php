@@ -6,6 +6,8 @@
     include_once './config/database.php';
     include_once './objects/badge.php';
 	include_once './objects/helper.php';
+	
+    include_once './config/keyhandler.php';
 
     // instantiate database and product object
     $database = new Database();
@@ -14,6 +16,7 @@
     // initialize object
 	$badgeObj = new Badge($db);
 	$helper = new Helper();
+    $keyHandler = new KeyHandler($db);
 
     $request_method=$_SERVER["REQUEST_METHOD"];
     
