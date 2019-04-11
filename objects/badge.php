@@ -33,8 +33,8 @@ class Badge{
     
     public function get_daily_badge_by_type($date, $badgeDesc) {
         $date_query = date($date);
-        $query="SELECT * FROM ".$this->table_name . " WHERE date=".$date_query. " AND badgeDesc=".$badgeDesc;
-        
+        $query="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query. "\" AND badgeDesc=\"".$badgeDesc."\"";
+        echo $query;
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
@@ -45,7 +45,7 @@ class Badge{
     }
 
     public function get_badges_by_type($badgeDesc) {
-        $query="SELECT * FROM ".$this->table_name . " WHERE badgeDesc=".$badgeDesc;
+        $query="SELECT * FROM ".$this->table_name . " WHERE badgeDesc=\"".$badgeDesc."\"";
         
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -74,6 +74,7 @@ class Badge{
         $query = "INSERT INTO " . $this->table_name . " SET
         badgeDesc=:badgeDesc, userId=:userId, date=:date";
 
+        echo $query;
         // prepare query
         $stmt = $this->conn->prepare($query);
 
