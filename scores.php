@@ -7,6 +7,7 @@
     include_once './objects/score.php';
 	include_once './objects/helper.php';
 	include_once './objects/badge.php';
+    include_once '../config/keyhandler.php';
 
     // instantiate database and product object
     $database = new Database();
@@ -16,6 +17,7 @@
 	$scoreObj = new Score($db);
 	$helper = new Helper();
 	$badgeObj = new Badge($db);
+    $keyHandler = new KeyHandler($db);
 
 	$request_method=$_SERVER["REQUEST_METHOD"];
 	$headers = apache_request_headers();
@@ -60,11 +62,10 @@
 							extract($row);
 							
 							if (array_key_exists($userId, $scores_arr)) {
-								$userScore = $scores_arr[$userId]["score"] + $score;
-								$scores_arr[$userId]["score"] = $userScore;
+								$userScore = $scores_arr[$userId] + $score;
+								$scores_arr[$userId] = $userScore;
 							} else {
-								$scores_arr[$userId]["score"] = $score;
-								$scores_arr[$userId]["date"] = $date;
+								$scores_arr[$userId] = $score;
 							}
 						}
 					} else {
@@ -112,20 +113,42 @@
 					if ($scoreObj->addScore()) {
 						http_response_code(201);
 						echo json_encode(array("message" => "Score created."));
-						$badge = $scoreObj->checkScoreBadge();
-						$badgeObj->userId = $scoreObj->userId;
-						$badgeObj->date = $scoreObj->date;
-						if ($badge == "top") {
-							// delete today's highscore badge and reward this user
-							$badgeObj->badgeDesc = $helper->highscoreBadge;
-							$badgeObj->remove_badge();
-							$badgeObj->add_badge();
-						} else if ($badge == "worst") {
-							// delete today's worstscore badge and reward this user
-							$badgeObj->badgeDesc = $helper->worstScoreBadge;
-							$badgeObj->remove_badge();
-							$badgeObj->add_badge();
+
+						$stmt = $scoreObj->get_user_daily_scores($scoreObj->date, $scoreObj->userId);
+						$num = $stmt->rowCount();
+
+						// check if more than 4 record found, player finished all the challenges
+						if($num > 4) {
+							$stmt = $scoreObj->get_daily_scores($scoreObj->date);
+							$scores_arr=array();
+							while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+								extract($row);
+								
+								if (array_key_exists($userId, $scores_arr)) {
+									$userScore = $scores_arr[$userId] + $score;
+									$scores_arr[$userId] = $userScore;
+								} else {
+									$scores_arr[$userId] = $score;
+								}
+							}
+							arsort($scores_arr);
+
+							$badgeObj->userId = $scoreObj->userId;
+							$badgeObj->date = $scoreObj->date;
+
+							if (strcasecmp(array_key_first($scores_arr),$scoreObj->userId)==0) {
+								// top score!
+								$badgeObj->badgeDesc = $helper->highscoreBadge;
+						 		$badgeObj->remove_badge();
+							 	$badgeObj->add_badge();
+							} else if (strcasecmp(array_key_last($scores_arr),$scoreObj->userId)==0) {
+								// worst score!
+								$badgeObj->badgeDesc = $helper->worstScoreBadge;
+								$badgeObj->remove_badge();
+							 	$badgeObj->add_badge();
+							}
 						}
+
 					} else {
 						http_response_code(500);
 						echo json_encode(array("message" => "Failed to create score."));
