@@ -54,7 +54,7 @@
 	} else {
 		http_response_code(403);
         echo json_encode(
-            array("message" => $apikey, "usent"=> $key);
+            array("message" => $apikey, "usent"=> $key)
         );
 	}
 ?>
