@@ -50,7 +50,7 @@ class Score{
       
     public function get_user_daily_scores($id, $date) {
         $date_query = date($date);
-        $userIdQuery = " WHERE userId=\"".$id."\"";
+        $userIdQuery = " userId=\"".$id."\"";
         $query="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query."\"". " AND ".$userIdQuery;
         
         echo $query;
@@ -74,9 +74,7 @@ class Score{
         // execute query
         $stmt->execute();
         $num = $stmt->rowCount();
-        echo print_r($query);
-        echo print_r($stmt);
-        echo print_r($num);
+     
         if ($num < 1) {
             // query to insert record
             $query = "INSERT INTO " . $this->table_name . " SET
