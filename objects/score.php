@@ -50,7 +50,7 @@ class Score{
       
     public function get_user_daily_scores($id, $date) {
         $date_query = date($date);
-        $userIdQuery = " WHERE userId=".$id;
+        $userIdQuery = " WHERE userId=\"".$id."\"";
         $query="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query."\"". " AND ".$userIdQuery;
         
         // prepare query statement
