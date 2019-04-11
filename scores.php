@@ -28,7 +28,7 @@
 	foreach ($headers as $header => $value) {
 		if(strcasecmp($header, 'userId')==0) {
 			$id = $value;
-		} else if (strcasecmp($header, 'date')==0) {
+		} else if (strcasecmp($header, 'currentDate')==0) {
 			$date = $value;
 		} else if(strcasecmp($header, 'key')==0) {
             $key = $value;
