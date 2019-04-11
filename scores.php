@@ -7,7 +7,7 @@
     include_once './objects/score.php';
 	include_once './objects/helper.php';
 	include_once './objects/badge.php';
-    include_once '../config/keyhandler.php';
+    include_once './config/keyhandler.php';
 
     // instantiate database and product object
     $database = new Database();
