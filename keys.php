@@ -41,10 +41,10 @@
     if(strcasecmp($apikey, $key)==0) {
 		switch($request_method) {
 			case 'GET':
-                $keyHandler->keyName = "core";
-                $coreKey = $keyHandler->get_key();
+                $keyHandler->keyName = "extApp";
+                $extKey = $keyHandler->get_key();
                 http_response_code(200);
-                echo json_encode($coreKey);
+                echo json_encode($extKey);
 				break;
 			default:
 				// Invalid Request Method
@@ -54,7 +54,7 @@
 	} else {
 		http_response_code(403);
         echo json_encode(
-            array("message" => $apikey, "usent"=> $key)
+            array("message" => "Incorrect API Key")
         );
 	}
 ?>
