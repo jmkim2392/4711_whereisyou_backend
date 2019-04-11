@@ -53,12 +53,12 @@
 				$num = $stmt->rowCount();
 
 				// check if more than 0 record found
-				if($num>0){
+				if($num>0) {
 		
 					$scores_arr=array();
 
 					if (strcasecmp($leaderboard,'true')==0) {
-						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 							extract($row);
 							
 							if (array_key_exists($userId, $scores_arr)) {
@@ -71,7 +71,7 @@
 					} else {
 						$scores_arr=array();
 				
-						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 							extract($row);
 							
 							$score_item=array(
@@ -100,7 +100,7 @@
 
 				// make sure data is not empty
 				if(!empty($data->userId) && !empty($data->challengeId) && !empty($data->score) && !empty($data->distance)) {
-				
+					
 					// set score property values
 					$scoreObj->scoreId = $helper->getGUID();
 					$scoreObj->userId = $data->userId;
@@ -111,8 +111,6 @@
 				
 					// create the score
 					if ($scoreObj->addScore()) {
-						http_response_code(201);
-						echo json_encode(array("message" => "Score created."));
 
 						$stmt = $scoreObj->get_user_daily_scores($scoreObj->date, $scoreObj->userId);
 						$num = $stmt->rowCount();
@@ -148,7 +146,8 @@
 							 	$badgeObj->add_badge();
 							}
 						}
-
+						http_response_code(201);
+						echo json_encode(array("message" => "Score created."));
 					} else {
 						http_response_code(500);
 						echo json_encode(array("message" => "Score Exists"));

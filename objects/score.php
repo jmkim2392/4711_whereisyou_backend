@@ -53,6 +53,7 @@ class Score{
         $userIdQuery = " WHERE userId=\"".$id."\"";
         $query="SELECT * FROM ".$this->table_name . " WHERE date=\"".$date_query."\"". " AND ".$userIdQuery;
         
+        echo $query;
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
