@@ -63,32 +63,48 @@ class Score{
     }
 
     public function addScore() {
-        // query to insert record
-        $query = "INSERT INTO " . $this->table_name . " SET
-        scoreId=:scoreId, userId=:userId, challengeId=:challengeId, score=:score, distance=:distance, date=:date";
 
+        //query check if exists
+        $query = "SELECT * from " . $this->table_name . " WHERE userId=\"".$this->userId."\" AND challengeId=\"".$this->challengeId."\"";
+        
         // prepare query
         $stmt = $this->conn->prepare($query);
-
-        // sanitize
-        $this->userId=htmlspecialchars(strip_tags($this->userId));
-        $this->challengeId=htmlspecialchars(strip_tags($this->challengeId));
-        $this->score=htmlspecialchars(strip_tags($this->score));
-        $this->distance=htmlspecialchars(strip_tags($this->distance));
-
-        // bind values
-        $stmt->bindParam(":scoreId", $this->scoreId);
-        $stmt->bindParam(":userId", $this->userId);
-        $stmt->bindParam(":challengeId", $this->challengeId);
-        $stmt->bindParam(":score", $this->score);
-        $stmt->bindParam(":distance", $this->distance);
-        $stmt->bindParam(":date", date($this->date));
-
+        
         // execute query
-        if($stmt->execute()){
-            return true;
+        $stmt->execute();
+        $num = $stmt->rowCount();
+        echo print_r($query);
+        echo print_r($stmt);
+        echo print_r($num);
+        if ($num < 1) {
+            // query to insert record
+            $query = "INSERT INTO " . $this->table_name . " SET
+            scoreId=:scoreId, userId=:userId, challengeId=:challengeId, score=:score, distance=:distance, date=:date";
+
+            // prepare query
+            $stmt = $this->conn->prepare($query);
+
+            // sanitize
+            $this->userId=htmlspecialchars(strip_tags($this->userId));
+            $this->challengeId=htmlspecialchars(strip_tags($this->challengeId));
+            $this->score=htmlspecialchars(strip_tags($this->score));
+            $this->distance=htmlspecialchars(strip_tags($this->distance));
+
+            // bind values
+            $stmt->bindParam(":scoreId", $this->scoreId);
+            $stmt->bindParam(":userId", $this->userId);
+            $stmt->bindParam(":challengeId", $this->challengeId);
+            $stmt->bindParam(":score", $this->score);
+            $stmt->bindParam(":distance", $this->distance);
+            $stmt->bindParam(":date", date($this->date));
+
+            // execute query
+            if($stmt->execute()){
+                return true;
+            }
         }
         return false;
+        
     }
 
     public function checkScoreBadge() {

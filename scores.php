@@ -151,7 +151,7 @@
 
 					} else {
 						http_response_code(500);
-						echo json_encode(array("message" => "Failed to create score."));
+						echo json_encode(array("message" => "Score Exists"));
 					}
 				} else {
 					http_response_code(400);
