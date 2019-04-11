@@ -116,13 +116,13 @@
 						$num = $stmt->rowCount();
 
 						// check if more than 4 record found, player finished all the challenges
+						$recordCount =0;
 						if($num > 4) {
-							echo "this user completed challenge";
 							$stmt = $scoreObj->get_daily_scores($scoreObj->date);
 							$scores_arr=array();
 							while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 								extract($row);
-								
+								$recordCount++;
 								if (array_key_exists($userId, $scores_arr)) {
 									$userScore = $scores_arr[$userId] + $score;
 									$scores_arr[$userId] = $userScore;
@@ -140,15 +140,14 @@
 								$badgeObj->badgeDesc = $helper->highscoreBadge;
 						 		$badgeObj->remove_badge();
 							 	$badgeObj->add_badge();
-							} else if (strcasecmp(array_key_last($scores_arr),$scoreObj->userId)==0) {
-								// worst score!
+							} 
+							if (strcasecmp(array_key_last($scores_arr),$scoreObj->userId)==0) {
 								$badgeObj->badgeDesc = $helper->worstScoreBadge;
 								$badgeObj->remove_badge();
 							 	$badgeObj->add_badge();
 							}
-						} else {
-							echo "this user did not do all challenge";
-						}
+
+						} 
 						http_response_code(201);
 						echo json_encode(array("message" => "Score created."));
 					} else {
